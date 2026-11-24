@@ -1180,10 +1180,11 @@ render();
 <script>(function(){
   if(window.name!=='vocabApp') return;
   var K='vocab-window-v1';
-  try{ var g=JSON.parse(localStorage.getItem(K)); if(g&&g.w>=320&&g.h>=400){ window.resizeTo(g.w,g.h); window.moveTo(g.x,g.y); } }catch(e){}
+  try{ var g=JSON.parse(localStorage.getItem(K)); if(g&&g.w>=320&&g.h>=400){ window.resizeTo(g.w,g.h); window.moveTo(g.x,g.y);
+    setTimeout(function(){ var dw=g.w-window.outerWidth, dh=g.h-window.outerHeight; if(dw||dh) window.resizeBy(dw,dh); },300); } }catch(e){}
   var last='';
   function save(){ var g={x:window.screenX,y:window.screenY,w:window.outerWidth,h:window.outerHeight}, s=JSON.stringify(g); if(s!==last&&g.w>=320){ last=s; try{localStorage.setItem(K,s)}catch(e){} } }
-  setTimeout(function(){ save(); setInterval(save,1500); },800);
+  setTimeout(function(){ save(); setInterval(save,1500); },900);
   window.addEventListener('resize',save); window.addEventListener('pagehide',save);
 })();</script>
 <script>if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(function(){});</script>
