@@ -1137,8 +1137,14 @@ app.addEventListener('mousedown', e => {
 });
 document.addEventListener('keydown', e => {
   if (view !== 'study' || !S || e.isComposing || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+  // 스페이스 = 학습 시간 일시정지·재개 (2026-11-28 윤상사 지시: 카드 넘기기·판정은 Enter만). 글자 입력칸에서는 띄어쓰기
+  if (e.key === ' ' && !e.target.closest('input, textarea, select, [contenteditable="true"]')) {
+    e.preventDefault();
+    if (!e.repeat) { clockSync(); if (timeLog.active) { timeLog.active.manualPause = !timeLog.active.manualPause; timeLog.active.lastAt = Date.now(); saveTime(); clockPaint(); } }
+    return;
+  }
   if (e.target.closest('#clock-toggle')) return;
-  const actionKey = e.key === ' ' || e.key === 'Enter';
+  const actionKey = e.key === 'Enter';
   if (S.phase === 'round') {
     if (actionKey) { e.preventDefault(); if (!e.repeat) nextRound(); }
     return;
